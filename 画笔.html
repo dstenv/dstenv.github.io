@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="zh">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul {
+        list-style: none;
+    }
+    .sec1{
+        width: 600px;
+        /* height: 500px; */
+        margin: 0 auto;
+        border: 1px solid black;
+    }
+    .sec1 ul {
+        user-select: none;
+        margin: 15px 0 0 20px;
+        display: flex;
+        align-items: center;
+    }
+    .sec1 ul li:nth-of-type(n+2) {
+        cursor: pointer;
+        display: flex;
+        width: 25px;
+        height: 25px;
+        margin: 0 10px;
+        border: 2px solid rgb(118, 118, 118);
+    }
+    .fir {
+        background-color: black;
+    }
+    .sec {
+        background-color: red;
+    }
+    .three {
+        background-color: orange;
+    }
+    .thou {
+        background-color: yellow;
+    }
+    .fri {
+        background-color: green;
+    }
+    .sex {
+        background-color: blue;
+    }
+    .seven {
+        background-color: aqua;
+    }
+    .eight {
+        background-color: purple;
+    }
+    .controller {
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* width: 400px; */
+        margin: 20px auto 0;
+        padding-bottom: 20px;
+        border-bottom: 1px solid black;
+    }
+    .controller button {
+        cursor: pointer;
+        width: 70px;
+        height: 30px;
+    }
+    .controller span {
+        margin: 0 10px;
+    }
+</style>
+</head>
+<body>
+    <main>
+        <section class="sec1">
+            <ul class="sel-ul">
+                <li>
+                    <span>请选择画笔颜色：</span>
+                </li>
+                <li class="sel-li fir active" data-color="黑色"></li>
+                <li class="sel-li sec" data-color="红色"></li>
+                <li class="sel-li three" data-color="橙色"></li>
+                <li class="sel-li thou" data-color="黄色"></li>
+                <li class="sel-li fri" data-color="绿色"></li>
+                <li class="sel-li sex" data-color="蓝色"></li>
+                <li class="sel-li seven" data-color="青色"></li>
+                <li class="sel-li eight" data-color="紫色"></li>
+            </ul>
+            <div class="controller">
+                <button>清空画布</button>
+                <span>当前所选择的颜色：</span>
+                <button class="clear">橡皮擦</button>
+            </div>
+            <canvas class="canvas" width="600" height="400"></canvas>
+
+        </section>
+    </main>
+
+<!-- 引入Jquery文件 -->
+<script src ="./js/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+    let canvas = document.querySelector('.canvas')
+    let context = canvas.getContext('2d')
+    let isClear = false
+    let clearWidth = 15
+    let clearHeight = 15
+
+    function init(element) {
+        $('.controller span').text(`当前所选择的颜色：${element.data('color')}`)
+        let bgc = getComputedStyle(element[0]).backgroundColor
+        // console.log(bgc);
+        context.strokeStyle = bgc
+    }
+    init($('.active'))
+
+    $('.sel-ul').click(function (event) {
+        console.log(event.target);
+        canvas.style.cursor = 'auto'
+        if($(event.target).hasClass('sel-li')){
+            isClear = false
+            init($(event.target))
+        }else{
+            return
+        }
+    })
+
+    $('.clear').click(function () {
+        $('.controller span').text(`橡皮擦模式`)
+        canvas.style.cursor = 'url(./img/move.png),auto'
+        isClear = true
+    })
+
+    $('.canvas').mousedown(function (event) {
+        // console.log(event.offsetX,event.offsetY);
+        context.beginPath()
+        context.moveTo(event.offsetX,event.offsetY)
+        $('.canvas').mousemove(function (event) {
+            // console.log(event.offsetX,event.offsetY);
+            if(!isClear){
+                context.lineTo(event.offsetX,event.offsetY)
+            }else{
+                context.clearRect(event.offsetX,event.offsetY,clearWidth,clearHeight)
+            }
+            context.stroke()
+        })
+        $('.canvas').mouseout(function () {
+        $(this).off('mousemove')
+    })
+    })
+    $('.canvas').mouseup(function () {
+        $(this).off('mousemove')
+    })
+
+    $('.controller button').eq(0).click(function () {
+        // console.log(3);
+        context.clearRect(0,0,600,400)
+    })
+
+    
+</script>
+</body>
+</html>

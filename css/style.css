@@ -155,6 +155,7 @@ ul, ol {
 }
 .intro .intro-body .brand-heading {
 	color: #F4D03F;
+	letter-spacing: 8px !important;
 	text-transform: uppercase;
 	letter-spacing: -2px;
 }

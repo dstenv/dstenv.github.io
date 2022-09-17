@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="zh">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul{
+        list-style: none;
+    }
+    .show{
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        width: 590px;
+        margin: 0 auto;
+    }
+    .banner{
+        position: relative;
+        left: 0;
+        display: flex;
+    }
+    .banner li{
+        display: flex;
+    }
+    .banner li img{
+        outline: none;
+        width: 590px;
+    }
+    .box{
+        transition: background .2s linear 0s;
+        cursor: pointer;
+        position: absolute;
+        z-index: 2;
+        width: 40px;
+        height: 40px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        background-image: url(./img/bannerImg/leftIcon.png);
+        background-size: cover;
+    }
+    .box:hover{
+        background-color: rgba(0, 0, 0, .3)
+    }
+    .left{
+        left: 0;
+    }
+    .right{
+        right: 0;
+        transform: rotate(180deg);
+    }
+    .nav{
+        position: absolute;
+        z-index: 2;
+        bottom: 15px;
+        left: 30px;
+        display: flex;
+    }
+    .nav li{
+        cursor: pointer;
+        border-radius: 50%;
+        margin: 0 5px;
+        display: flex;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(255,255,255,.5);
+        /* background-color: rgba(200, 22, 35,.8); */
+    }
+</style>
+</head>
+<body>
+
+    <main>
+        <section>
+            <div class="show">
+                <div class="left box"></div>
+                <div class="right box"></div>
+                <ul class="nav">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <ul class="banner">
+                    <li>
+                        <img src="./img/bannerImg/6.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/1.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/2.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/3.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/4.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/5.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/6.jpg" alt="">
+                    </li>
+                    <li>
+                        <img src="./img/bannerImg/1.jpg" alt="">
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+<!-- 引入Jquery文件 -->
+<script src =""></script>
+<script src="./js/banner.js"></script>
+<script>
+    
+</script>
+</body>
+</html>

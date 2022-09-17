@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="zh">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+    *{
+        box-sizing: border-box;
+    }
+    :root{
+        --big-div-color: #8dd6f980;
+        --small-div-color: #175d96;
+    }
+    .container{
+        position: relative;
+        height: 200px;
+        transform-style: preserve-3d;
+    }
+    .big {
+        
+        width: 84px;
+        height: 84px;
+        transform-style: preserve-3d;
+        transform: translate3d(-50%,-50%,100px) rotateX(35deg) rotateY(45deg);
+        animation: rotateBig 1s linear infinite .5s;
+    }
+
+    .big div {
+        /* width: 168px;
+        height: 168px; */
+        background-color: var(--big-div-color);
+    }
+    .small {
+        width: 42px;
+        height: 42px;
+        transform-style: preserve-3d ;
+        transform: translate3d(-50%,-50%,200px) rotateX(-35deg) rotateY(45deg);
+        animation: rotateSmall 1s linear infinite .5s;
+    }
+    .small div {
+        width: 84px;
+        height: 84px;
+        position: absolute;
+        background-color: var(--small-div-color);
+    }
+    .big, .small {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        
+    }
+
+    @keyframes rotateBig {
+        50%, 100% {
+            transform: translate3d(-50%,-50%,100px) rotateX(35deg) rotateY(45deg)
+        }
+        from {
+            transform: translate3d(-50%,-50%,100px) rotateX(35deg) rotateY(135deg)
+        }
+    }
+
+    @keyframes rotateSmall {
+        from {
+            transform: translate3d(-50%,-50%,200px) rotateX(-35deg) rotateY(45deg)
+        }
+        50%, 100% {
+            transform: translate3d(-50%,-50%,200px) rotateX(-35deg) rotateY(-45deg)
+        }
+    }
+
+    .big div, .small div {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #fff;
+    }
+
+    .big div:nth-of-type(1){
+        transform: translateZ(42px);
+    }
+    .small div:nth-of-type(1){
+        transform: translateZ(21px);
+    }
+
+    .big div:nth-of-type(2){
+        transform: rotateY(180deg) translateZ(42px);
+    }
+    .small div:nth-of-type(2){
+        transform: rotateY(180deg) translateZ(21px);
+    }
+
+    .big div:nth-of-type(3){
+        transform: rotateY(90deg) translateZ(42px);
+    }
+    .small div:nth-of-type(3){
+        transform: rotateY(90deg) translateZ(21px);
+    }
+
+    .big div:nth-of-type(4){
+        transform: rotateX(90deg) translateZ(42px);
+    }
+    .small div:nth-of-type(4){
+        transform: rotateX(90deg) translateZ(21px);
+    }
+
+    .big div:nth-of-type(5){
+        transform: rotateX(-90deg) translateZ(42px);
+    }
+    .small div:nth-of-type(5){
+        transform: rotateX(-90deg) translateZ(21px);
+    }
+
+    .big div:nth-of-type(6){
+        transform: rotateY(-90deg) translateZ(42px);
+    }
+    .small div:nth-of-type(6){
+        transform: rotateY(-90deg) translateZ(21px);
+    }
+
+    .carousel-container {
+        position: relative;
+        height: 400px;
+        transform-style: preserve-3d;
+        /* background-color: pink; */
+    }
+    .carousel-container .carousel{ 
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 240px;
+        transform-style: preserve-3d;
+        transform: translate3d(-50%,-50%,0) rotateX(-2deg);
+        height: 160px;
+        animation: carousel 20s linear infinite;
+    }
+    .carousel div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        background-color: rgba(147,153,209,0.6);
+        backdrop-filter: blur(10px);
+    }
+    .carousel div:nth-of-type(1){
+        transform: translateZ(208px);
+    }
+    .carousel div:nth-of-type(2){
+        transform: rotateY(60deg) translateZ(208px);
+    }
+    .carousel div:nth-of-type(3){
+        transform: rotateY(120deg) translateZ(208px);
+    }
+    .carousel div:nth-of-type(4){
+        transform: rotateY(180deg) translateZ(208px);
+    }
+    .carousel div:nth-of-type(5){
+        transform: rotateY(240deg) translateZ(208px);
+    }
+    .carousel div:nth-of-type(6){
+        transform: rotateY(300deg) translateZ(208px);
+    }
+
+    @keyframes carousel {
+        0% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(0);
+        }
+        20% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(60deg);
+        }
+        36% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(120deg);
+        }
+        52%{
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(180deg);
+        }
+        68% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(240deg);
+        }
+        84% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(300deg);
+        }
+        100% {
+            transform: translate3d(-50%,-50%,0) rotateX(-10deg) rotateY(360deg);
+        }
+        
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="big">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="small">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+    </div>
+    <div class="carousel-container">
+        <div class="carousel">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+    </div>
+
+<!-- 引入Jquery文件 -->
+<script src =""></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
