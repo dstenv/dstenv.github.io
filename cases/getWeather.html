@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="en">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+/* 导入CSS文件方式2 */
+/*     @import url("");*/
+    body{
+        /* background-color: rgb(79, 150, 179); */
+    }
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .heart{
+        width: 900px;
+        margin: 0 auto;
+        overflow: hidden;
+        background-color: rgba(76, 162, 196, 0.5);
+    }
+    .head{
+        width: 800px;
+        margin: 10px auto;
+        text-align: center;
+        /* background-color: aqua; */
+    }
+    .left{
+        float: left;
+    }
+    .date{
+        float: right;
+    }
+    .inp{
+        outline: none;
+        margin-left: 15px;
+        vertical-align: top;
+        height: 20px;
+    }
+    .clean::after{
+        content: '';
+        display: block;
+        clear: both;
+    }
+    .content{
+        list-style: none;
+        width: 100%;
+        margin: 20px 0 0 0;
+        /* background-color: #ddd; */
+    }
+    .content li{
+        text-align: center;
+        float: left;
+        width: 118px;
+        height: 250px;
+        margin: 0 5px;
+        /* background-color: red; */
+    }
+    .content li p{
+        margin: 10px 0;
+    }
+    .content li img{
+        height: 50px;
+    }
+    .echarts{
+        width: 100%;
+        height: 300px;
+    }
+</style>
+</head>
+<body>
+    <main>
+        <section class="sec1">
+            <!-- <div class="heart">
+                <div class="head clean">
+                    <div class="left">
+                        <span>广州市 36℃</span>
+                        <input type="text" class="inp"/>
+                    </div>
+                    <span class="date">2022年10月15日</span>
+                </div>
+                <ul class="content clean">
+                    <li>
+                        <p>8/31</p>
+                        <p>晴转多云</p>
+                        <img src="./Img/duoyun.png" alt="">
+                        <p>36.1℃</p>
+                        <p>风力:1-2级</p>
+                        <p>湿度:23%</p>
+                    </li>
+                    
+                </ul>
+            </div> -->
+        </section>
+        <section class="sec2">
+            <div class="heart">
+                <div class="echarts">
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!-- 引入Jquery文件 -->
+<script src=".././js/Ajax.js"></script>
+<script src=".././js/Util.js"></script>
+<script src =".././js/jquery-3.6.0.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.3.3/echarts.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var city = ''
+
+        function getFormat(time,type) {
+            var reg = /[^0-9]/
+            time = time.replace(reg.exec(time)[0],type)
+            return time
+        }
+        var $inp = $('<input type="text" class="inp" placeholder="输入搜索城市">')
+        var $heart = $('<div class="heart"></div>')
+        var $head = $('<div class="head clean"></div>')
+        var $ul = $('<ul class="content clean"></ul>')
+        var $cityspan = $(`<span></span>`)
+
+        // 初始化echarts实例
+        var echartOne = echarts.init(document.querySelector('.echarts'))
+        // console.log('echartOne -->',echartOne);
+
+        // 创建当天到未来7天的数据
+        function createDate(city) {
+            $('.content li').remove()
+            ajax.request({
+                    method:'get',
+                    url:'http://api.tianapi.com/tianqi/index',
+                    param:{
+                        key:'50fa0039110a7831835382d3f2927ead',
+                        city:city
+                    },
+                    success:function(res){
+                        console.log(res);
+                        var str1 = '云'
+                        var str2 = '雷'
+                        var str3 = '晴'
+                        $cityspan.text(city + ' ' + res.newslist[0].real)
+                        // 指定图表的配置项和数据
+                        var options = {
+                        title: {
+                            text: '未来七天最高温和最低温如下图',
+                            left:'center'
+                        },
+                        xAxis:{
+                            data:[]
+                        },
+                        yAxis:[
+                            {
+                                type: 'value',
+                                name: '温度',
+                                min: 0,
+                                max: 50,
+                                position: 'left',
+                                axisLabel: {
+                                    formatter: '{value} °C'
+                                }
+                            }
+                        ],
+                        series:[
+                            {
+                                data:[],
+                                type:'line',
+                                stack:'x',
+                                label: {
+                                    show: true,
+                                    position: 'bottom',
+                                    formatter: function (params) {
+                                        return params.value + "℃"
+                                    },
+                                    textStyle: {
+                                        fontSize: 12
+                                    }
+                                }
+                            },
+                            {
+                                data:[],
+                                type:'line',
+                                stack:'x',
+                                label: {
+                                    position: 'top',
+                                    show: true,
+                                    formatter: function (params) {
+                                        console.log(params,options.series[0].data[params.data.index]);
+                                        return options.series[0].data[params.data.index] + params.value + "℃"
+                                    },
+                                    textStyle: {
+                                        fontSize: 12
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                        res.newslist.forEach(function(value,index){
+                            var $li = $('<li></li>')
+                            var $p1 = $('<p></p>')
+                            $p1.text(getFormat(value.date.slice(-5),'/'))
+                            options.xAxis.data.push(getFormat(value.date.slice(-5),'/'))
+
+                            var $p2 = $('<p></p>')
+                            $p2.text(value.weather)
+                            var $icon = $(`<img alt="" >`)
+                            if(value.weather.indexOf(str1) > -1){
+                                $icon.attr('src','../img/weather/duoyun.png')
+                            }
+                            else if(value.weather.indexOf(str2) > -1){
+                                $icon.attr('src','../img/weather/lei.png')
+                            }
+                            else if(value.weather.indexOf(str3) > -1){
+                                $icon.attr('src','../img/weather/sunshine.png')
+                            }
+                            else{
+                                $icon.attr('src','../img/weather/notknow.png')
+                            }
+
+                            var $p3 = $('<p></p>')
+                            $p3.text(value.real)
+                            var obj = {
+                                value:parseInt(value.highest)-parseInt(value.lowest),
+                                index:index
+                            }
+                            options.series[0].data.push(parseInt(value.lowest))
+                            options.series[1].data.push(obj)
+                            var $p4 = $('<p></p>')
+                            $p4.text('风力:' + value.windsc)
+                            var $p5 = $('<p></p>')
+                            $p5.text('湿度:' + value.humidity + '%')
+
+                            $li.append($p1)
+                            $li.append($p2)
+                            $li.append($icon)
+                            $li.append($p3)
+                            $li.append($p4)
+                            $li.append($p5)
+                            $ul.append($li)
+                        })
+                        // console.log(options);
+                        // 使用刚指定的配置项和数据显示图表
+                        echartOne.setOption(options)
+                        $heart.append($ul)
+                        $('main .sec1').append($heart)
+                    }
+                })
+        }
+
+        ajax.jsonp({
+            url:'https://apis.map.qq.com/ws/location/v1/ip',
+            param:{
+                key:'7AZBZ-KXO64-XVBUA-XGHN3-BLIAH-HRFGY',
+                output:'jsonp'
+            },
+            callbackName:'callback',
+            success:function (res) {
+                console.log(res);
+                city = res.result.ad_info.city
+                console.log(city);
+                var $leftDiv = $('<div class="left"></div>')
+                // $cityspan.text(city)
+                $leftDiv.append($cityspan)
+                $leftDiv.append($inp)
+                $head.append($leftDiv)
+                var time = new Date()
+                var dateTime = time.formatTimeNB('yyyy-MM-dd')
+                var $datespan = $(`<span class="date">${dateTime}</span>`)
+                $head.append($datespan)
+                $heart.append($head)
+                createDate(city)
+            }
+        })
+    
+        $inp.on({input:function () {
+            let inpThis = this
+            document.onkeydown = function (event) {
+                if(event.keyCode === 13){
+                    // console.log(true);
+                    if(inpThis.value.trim() != ''){
+                        console.log(inpThis.value);
+                        $('.left span').text(inpThis.value)
+                        createDate(inpThis.value)
+                    }
+                }
+                
+            }
+        }})
+    
+    
+        
+    
+    })
+</script>
+</body>
+</html>
