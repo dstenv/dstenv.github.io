@@ -1,7 +1,6 @@
 let oindex
 let index = 1
 
-
 let left = document.querySelector('.left')
 let right = document.querySelector('.right')
 let banner = document.querySelector('.banner')
