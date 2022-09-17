@@ -9,10 +9,10 @@ console.log(navLis[0]);
 navLis[0].style.backgroundColor = 'rgba(200, 22, 35,.8)'
 leftLong = banner.querySelectorAll('li')[0].offsetWidth
 liLength = banner.querySelectorAll('li').length
-transitionTime = 500
+transitionTime = 1000
 banner.style.left = -leftLong*index + 'px'
 setTimeout(() => {
-    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s linear 0s`
+    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s ease`
 }, 4);
 let timer
 
@@ -28,7 +28,7 @@ function Autochange() {
                 banner.style.transition = 'none'
                 banner.style.left = banner.style.left = -leftLong*index + 'px'
                 setTimeout(() => {
-                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s linear 0s`
+                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s ease`
                 }, transitionTime);
             },transitionTime)
         }else{
@@ -55,14 +55,16 @@ function clickRun(direction) {
         if(index === 0){
             console.log('该到最后一张了');
             left.style.pointerEvents = 'none'
+            right.style.pointerEvents = 'none'
             index = liLength - 2
             navLis[index - 1].style.backgroundColor = 'rgba(200, 22, 35,.8)'
             setTimeout(() => {
                 banner.style.transition = 'none'
                 banner.style.left = banner.style.left = -leftLong*index + 'px'
                 setTimeout(() => {
-                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s linear 0s`
+                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s ease`
                     left.style.pointerEvents = 'auto'
+                    right.style.pointerEvents = 'auto'
                     Autochange()
                 }, transitionTime);
             },transitionTime)
@@ -77,14 +79,16 @@ function clickRun(direction) {
         if(index === liLength - 1){
             console.log('该到第一张了');
             right.style.pointerEvents = 'none'
+            left.style.pointerEvents = 'none'
             index = 1
             navLis[index - 1].style.backgroundColor = 'rgba(200, 22, 35,.8)'
             setTimeout(() => {
                 banner.style.transition = 'none'
                 banner.style.left = banner.style.left = -leftLong*index + 'px'
                 setTimeout(() => {
-                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s linear 0s`
+                    banner.style.transition = `all ${parseFloat(transitionTime/1000)}s ease`
                     right.style.pointerEvents = 'auto'
+                    left.style.pointerEvents = 'auto'
                     Autochange()
                 }, transitionTime);
             },transitionTime)

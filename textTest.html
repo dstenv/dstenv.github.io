@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="en">
+
+<head>
+	<!--meta 元标签 -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-wdith, initial-scale=1.0">
+	<!--兼容移动端 -->
+	<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+	<!-- 导入CSS文件方式1 -->
+	<!--     <link rel="stylesheet" href=""> -->
+	<!-- 引入less文件需要导入的东西 -->
+	<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+	<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+	<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+	<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+	<style type="text/css">
+		/* 导入CSS文件方式2 */
+		/*     @import url("");*/
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.box {
+			position: relative;
+			margin: 150px auto;
+			width: 400px;
+		}
+
+		.box img {
+			width: 100%;
+			display: block;
+		}
+
+		.info {
+			width: 398px;
+			height: 40px;
+			border: 1px solid #999;
+			border-top: none;
+			text-align: center;
+			line-height: 40px;
+			letter-spacing: 3px;
+		}
+
+		.fontdiv {
+			cursor: pointer;
+			display: inline-block;
+			width: 35px;
+			height: 35px;
+			text-align: center;
+			line-height: 35px;
+			font-size: 20px;
+			font-weight: bold;
+			color: white;
+			/* background-color: red; */
+			/* 设置文字斜体 */
+			font-style: italic;
+			position: absolute;
+		}
+
+		.clickStyle {
+			position: absolute;
+			font-size: 12px;
+			text-align: center;
+			line-height: 20px;
+			width: 20px;
+			height: 20px;
+			background-color: greenyellow;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<!-- <div class="clickStyle">1</div> -->
+		<img src="./img/texttest.jpg" alt="">
+		<div class="info"></div>
+	</div>
+
+	<!-- 引入Jquery文件 -->
+	<script src="./js//jquery-3.6.0.js"></script>
+	<script type="text/javascript">
+		//文字库
+		var textData = [{
+				text: '名列前茅'
+			},
+			{
+				text: '料事如神'
+			},
+			{
+				text: '博古通今'
+			},
+			{
+				text: '出类拔萃'
+			},
+			{
+				text: '誉满天下'
+			},
+			{
+				text: '博大精深'
+			},
+			{
+				text: '宽容大度'
+			},
+			{
+				text: '学贯中西'
+			},
+			{
+				text: '金蝉脱壳'
+			},
+			{
+				text: '魑魅魍魉'
+			},
+			{
+				text: '霸王别姬'
+			},
+			{
+				text: '国色天香'
+			},
+			{
+				text: '相濡以沫'
+			},
+			{
+				text: '六道轮回'
+			}
+		]
+
+		$(function () {
+			// 随机获取左偏移量和上偏移量
+			function getRanPosition() {
+				return {
+					left: Math.floor(Math.random() * ($('.box img').width() - $('.fontdiv').width())),
+					top: Math.floor(Math.random() * ($('.box img').height() - $('.fontdiv').height()))
+				}
+			}
+			// 随机获取文字库中的成语
+			function getRanText(data) {
+				return data[Math.floor(Math.random() * data.length)].text
+			}
+			// 点击图片上文字的字符串和点击的次数
+			var clickData = ''
+			var index = 1
+			var ranData = getRanText(textData)
+			console.log('ranData --> ', ranData, ranData.length);
+
+			$('.info').text('请在图上依次点击：' + ranData)
+
+			// 设定点击事件 这个方法是可以给后面创建的节点也绑定事件 其他方式不行
+			$('.box').on({
+				click: function (event) {
+					console.log(event, $(event.target));
+					// 拿到当前点击的文本
+					clickData += $(event.target).text()
+					// 创建点击的div
+					var $div = $('<div class="clickStyle">' + index + '</div>')
+					// 这里要先加进去 否则拿不到宽度和高度
+					$('.box').append($div)
+					// 事点击的div在文字中间
+					$div.css('left', parseFloat($(event.target).css('left')) + ($(event.target).width() -
+						$div.width()) / 2)
+					$div.css('top', parseFloat($(event.target).css('top')) + ($(event.target).height() -
+						$div.height()) / 2)
+					index++
+
+					// 如果是最后一个 则判断
+					if (clickData.length === ranData.length) {
+						console.log(clickData);
+						if (clickData === ranData) {
+							$('.info').css('transition', 'background .5s')
+							$('.info').css('background-color', '#44ff2f')
+							$('.info').css('border', '1px solid #44ff2f')
+							$('.info').text('验证成功')
+							setTimeout(() => {
+								location.reload()
+							}, 600);
+						} else {
+							setTimeout(() => {
+								// 这里alert需要延时调用(利用异步操作) 不然无法生成最后一个点击的div 
+								alert('验证失败！')
+								location.reload()
+							}, 4);
+						}
+					}
+				}
+			}, '.fontdiv')
+
+			// 判断两个节点是否有重叠
+			function isOverlap(ele1, ele2) {
+				// console.log('ele1',ele1);
+				// console.log('ele2',$(ele2));
+				// 如果两个节点不是同一个节点
+				if (ele1[0] !== ele2) {
+					// console.log(ele1, $(ele2));
+					// 如果两个节点的左偏移量的差值小于等于文字div的宽度 则说明有重叠的 上偏移量同理
+					var conditionleft = Math.abs(parseFloat(ele1.css('left')) - parseFloat($(ele2).css('left'))) <= $(
+						'.fontdiv').width() ? false : true
+					var conditiontop = Math.abs(parseFloat(ele1.css('top')) - parseFloat($(ele2).css('top'))) <= $(
+						'.fontdiv').height() ? false : true
+					console.log(conditionleft, conditiontop);
+					// if(!conditionleft){
+					//     if(!conditiontop){
+					//         return false
+					//     }
+					// }
+					// 只有两个都为false的时候才return false 否则return true 有一个为true则不进入
+					if (!(conditionleft || conditiontop)) {
+						return false
+					}
+				}
+				return true
+			}
+
+			// 创建文字div
+			function createRanDiv(parent) {
+				for (let i = 0; i < parent.length; i++) {
+					var $div = $('<div class="fontdiv"></div>')
+					$('.box').append($div)
+					var ranDomP = getRanPosition()
+					// console.log('ranDomP --> ', ranDomP);
+					$div.text(parent[i])
+					$div.css({
+						left: ranDomP.left,
+						top: ranDomP.top
+					})
+					// 循环去判断是否有重叠 如果有则i-- 当前的节点删除 重新生成
+					for (let j = 0; j < i; j++) {
+						if (!isOverlap($div, $('.fontdiv')[j])) {
+							$div.remove()
+							i--
+							break
+						}
+					}
+				}
+			}
+			createRanDiv(ranData)
+		})
+	</script>
+</body>
+
+</html>

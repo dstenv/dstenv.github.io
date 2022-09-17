@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="en">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src = "F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src = "F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+/* 导入CSS文件方式2 */
+/*     @import url("");*/
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 600px;
+        margin: 0 auto;
+        background-color: aqua;
+    }
+    .pic{
+        position: relative;
+        width: 100%;
+        height: 600px;
+        background-image: url(./img/moveTest/1.jpg);
+        background-size: cover;
+    }
+    .long{
+        position: relative;
+        z-index: 4;
+        width: 100%;
+        /* height: 46px; */
+        background-color: rgb(232,232,232);
+    }
+    .move{
+        position: relative;
+        left: 0;
+        display: table-cell;
+        vertical-align: middle;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        /* background-color: white; */
+        background-image: url(./img/moveTest/向右.png);
+        background-size: 80%;
+        background-position: 3px;
+        background-repeat: no-repeat;
+        border: 3px solid white
+    }
+    .move>img{
+        margin: 0 auto;
+        display: block;
+        width: 70%;
+        /* height: 80%; */
+    }
+    .after{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background-color: rgb(26,250,41);
+    }
+    .movebox{
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-color: red;
+    }
+    .left{
+        z-index: 2;
+        left: 0;
+        top: 0;
+        background-image: url(./img/moveTest/1.jpg);
+        background-position: 0 0;
+        /* background-size: cover; */
+    }
+    .right{
+        z-index: 1;
+        left: 50px;
+        top: 0;
+        background-color: white;
+        opacity: 1;
+    }
+    .successed{
+        position: absolute;
+        z-index: 3;
+        bottom: 0;
+        width: 100%;
+        /* animation-name: successful; */
+        animation-duration: 2s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        /* height: 30px; */
+        height: 0;
+        background-color: rgb(86, 230, 98);
+        font-size: 14px;
+        text-align: center;
+        line-height: 30px;
+        letter-spacing: 2px;
+    }
+    @keyframes successful{
+        from{height:0;}
+        to{height:30px}
+    }
+    /* 动画移出 */
+    @keyframes successfulLeave{
+        from{height:30px;}
+        to{height:0;}
+    }
+</style>
+</head>
+<body>
+    <div class="box">
+        <div class="pic">
+            <div class="left movebox"></div>
+            <div class="right movebox"></div>
+            <div class="successed"></div>
+        </div>
+        <div class="long">
+            <div class="move">
+            </div>
+            <div class="after"></div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+    var picImg = document.querySelector('.pic')
+    var long = document.querySelector('.long')
+    var move = document.querySelector('.move')
+    var movebox = document.querySelector('.movebox')
+    var after = document.querySelector('.after')
+    var left = document.querySelector('.left')
+    var right = document.querySelector('.right')
+    var successed = document.querySelector('.successed')
+
+    // 设置最大偏移量 滑块的最大偏移量和碎片的最大偏移量
+    var maxLeft = long.offsetWidth - move.offsetWidth
+    var maxsuipLeft = long.offsetWidth - movebox.offsetWidth
+
+    // 设置碎片1的背景图大小 要跟大图片的宽高一样
+    left.style.backgroundSize = picImg.offsetWidth + 'px ' + picImg.offsetHeight + 'px'
+    // 随机取两个碎片的位置
+    console.log('111 -> ',picImg.offsetWidth - movebox.offsetWidth + 1);
+    function getRandomPosition() {
+        // 随机获取左偏移量 范围在0到大图片的一半减碎片的宽度
+        var middleLeft = Math.floor(Math.random() * (picImg.offsetWidth - 2*movebox.offsetWidth + 1 - 10) + movebox.offsetWidth + 10)
+        // console.log(picImg.offsetWidth/2,middleLeft);
+        // 获取上偏移量 范围在0到大图片减碎片的高度
+        var middleTop = Math.floor(Math.random() * (picImg.offsetHeight - movebox.offsetHeight) + 1)
+        // console.log(picImg.offsetHeight/2,middleTop);
+        // 设置碎片1、碎片2的左偏移和上偏移
+        left.style.left = 0
+        left.style.top = middleTop + 'px'
+        right.style.left = middleLeft + 'px'
+        right.style.top = middleTop + 'px'
+
+        // 设置碎片1的背景图片位置
+        left.style.backgroundPositionX = -middleLeft + 'px'
+        left.style.backgroundPositionY = -middleTop + 'px'
+        console.log(left.style.backgroundPositionX,left.style.backgroundPositionY);
+    }
+    // randomPosition.left + 'px'
+    getRandomPosition()
+    // 设置滑块的初始位置
+    var beginLeft = (movebox.offsetWidth - move.offsetWidth)/2
+    move.style.left = beginLeft + 'px'
+    move.onmousedown = function (event) {
+        event.preventDefault()
+        // 按下的位置
+        var ol = event.pageX
+        console.log(ol);
+        // 移动的偏移量
+        var leftgo
+        // 两个碎片匹配成功的误差
+        var perfact
+        // 获取按下的时间 +new Date()是调用了Date.prototype.valueOf 表示当前到1970年1月1日0分0秒的毫秒数
+        var begTime = +new Date()
+        long.onmousemove = function (event) {
+            event.preventDefault()
+            leftgo = event.pageX - ol
+            // console.log(leftgo);
+            move.style.left = leftgo + beginLeft + 'px'
+            after.style.width = leftgo + beginLeft  + 'px'
+            left.style.left = leftgo + 'px'
+            // console.log(left.offsetLeft);
+            perfact = Math.abs(right.offsetLeft - left.offsetLeft)
+            console.log(perfact);
+            // 处理边界值
+            if(leftgo<=0){
+                move.style.left = 0
+                after.style.width = 0
+                left.style.left = 0
+            }
+            if(leftgo>=maxsuipLeft){
+                left.style.left = maxsuipLeft + 'px'
+                move.style.left = maxsuipLeft + beginLeft + 'px'
+                after.style.width = maxsuipLeft + beginLeft  + 'px'
+            }
+
+        }
+        long.onmouseleave = function () {
+            // 如果鼠标移出 验证失败 设置移动和鼠标松开事件为null
+            this.onmousemove = null
+            alert('验证失败')
+            getRandomPosition()
+            move.style.left = beginLeft + 'px'
+            after.style.width = 0 + 'px'
+            this.onmouseup = null
+        }
+        long.onmouseup = function () {
+            // 如果鼠标松开 设置移动和鼠标移出为null
+            this.onmousemove = null
+            this.onmouseleave = null
+            // 如果匹配成功
+            if(perfact<=5){
+                left.style.left = right.offsetLeft + 'px'
+                // 获取当前的毫秒数
+                var endTime = +new Date()
+                // 获取经过的时间
+                var successTime = (endTime - begTime)/1000
+                console.log(successTime);
+                successed.textContent = '你的速度达到了惊人的' + successTime + '秒'
+                // 设置动画名
+                successed.style.animationName = 'successful'
+                successed.style.height = 30 + 'px'
+                // 延时调用动画离开 延时的时间需要和动画的执行时间相同
+                setTimeout(() => {
+                    successed.style.animationName = 'successfulLeave'
+                    successed.style.height = 0
+                    // 延时调用初始化 时间需要和动画离开的时间相同
+                    setTimeout(() => {
+                        getRandomPosition()
+                        move.style.left = beginLeft + 'px'
+                        after.style.width = 0 + 'px'
+                    }, 2000);
+                }, 2000);
+            }else{
+                // 如果匹配失败 提示 初始化
+                alert('验证失败')
+                getRandomPosition()
+                move.style.left = beginLeft + 'px'
+                after.style.width = 0 + 'px'
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

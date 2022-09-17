@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="en">
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, iniaial-scale=1.0"> <!--兼容移动端 -->
+<head>
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script>
+<style type ="text/css">
+/* 导入CSS文件方式2 */
+/*     @import url("");*/
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .heart{
+        overflow: hidden;
+        width: 100%;
+        /* height: 300px; */
+        /* margin: 0 auto; */
+        /* background-color: aquamarine; */
+    }
+    .content{
+        float: left;
+
+    }
+    .pic{
+        position: relative;
+        /* display: inline-block; */
+        /* margin: 0 auto; */
+        /* width: 400px;
+        height: 400px; */
+        /* height: 100%; */
+        /* background-color: aqua; */
+        /* background-image: url(./Img/${index}.jpg); */
+        /* background-size:100% 100%; */
+    }
+    .pic img{
+        display: block;
+        /* width: 561px;
+        height: 374px; */
+    }
+    .card{
+        width: 340px;
+        height: 50px;
+        margin: 20px 30px 0;
+        /* background-color: black; */
+    }
+    .card img{
+        border:1px solid transparent;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        background-size: cover;
+    }
+    .showbigpic{
+        display: none;
+        float: left;
+        margin-left: 30px;
+        width: 500px;
+        height: 500px;
+        overflow: hidden;
+        background-color: red;
+        background-image: url(./img/portfolio/big0${index}.jpg);
+        background-position: 0 0;
+        /* background-size: 200% 200%; */
+    }
+    
+    .move{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 150px;
+        height: 150px;
+        background-color: red;
+        display: none;
+        /* display: inline-block; */
+        opacity: .3;
+    }
+</style>
+</head>
+<body>
+    <main>
+        <div class="heart">
+            <div class="content">
+                <div class="pic">
+                    <img src="./img/portfolio/big01.jpg" alt="">
+                    <div class="move"></div>
+                </div>
+                <div class="card">
+                    <img src="./img/portfolio/big01.jpg" alt="">
+                    <img src="./img/portfolio/big02.jpg" alt="">
+                    <img src="./img/portfolio/big03.jpg" alt="">
+                    <img src="./img/portfolio/big04.jpg" alt="">
+                    <img src="./img/portfolio/big05.jpg" alt="">
+                    <img src="./img/portfolio/big06.jpg" alt="">
+                </div>
+            </div>
+                <div class="showbigpic"></div>
+        </div>
+        
+    </main>
+
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+        var pic = document.querySelector(".pic")
+        var Img = document.querySelector('.pic img')
+        var move = document.querySelector(".move")
+        var bigpic = document.querySelector(".showbigpic")
+        var navimgs = document.querySelectorAll(".card img")
+        // var bigImg = document.querySelector(".showbigpic img")
+        // console.log(Img,$('.pic img').width());
+        Img.style.width = $('.pic img').width() + 'px'
+
+        var left;
+        var index = 1
+        var j = 0
+        // bigImg.setAttribute("src","url(./Img/" + index + ".jpg)")
+        navimgs[j].style.border = "1px solid red"
+        // pic.style.backgroundImage = "url(./Img/" + index + ".jpg)";
+        bigpic.style.backgroundImage = "url(./img/portfolio/big0" + index + ".jpg)";
+    
+        // 背景图缩放比例
+        // console.log(pic.offsetWidth,pic.offsetHeight);
+        var proportionX = pic.offsetWidth/(parseFloat(getComputedStyle(move).width))
+        var proportionY = pic.offsetHeight/(parseFloat(getComputedStyle(move).height))
+        
+    
+        // 方块移动和背景图的偏移量的比例
+        var propotion = (parseFloat(getComputedStyle(bigpic).width))/(parseFloat(getComputedStyle(move).width))
+        var pocitionY = (parseFloat(getComputedStyle(bigpic).height))/(parseFloat(getComputedStyle(move).height))
+        console.log(propotion,pocitionY);
+    
+        function bigpicmany(big) {
+            // console.log(big);
+            bigpic.style.backgroundSize = big + ''
+            // console.log(bigpic.style.backgroundSize);
+        }
+        bigpicmany(proportionX*100 + '%' + ' ' + proportionY*100 + '%')
+    
+        pic.onmouseover = function(event) {
+            var Img = new Image()
+            // console.log(getComputedStyle(this).backgroundImage);
+            Img.src = "./img/portfolio/big0" + index + ".jpg"
+            console.log(Img);
+             // 背景图缩放比例
+            var proportionX = pic.offsetWidth/(parseFloat(getComputedStyle(move).width))
+            var proportionY = pic.offsetHeight/(parseFloat(getComputedStyle(move).height))
+            console.log(proportionX,proportionY);
+            bigpicmany(proportionX*100 + '%' + ' ' + proportionY*100 + '%')
+            Img.onload = function () {
+                move.style.display = "inline-block"
+                bigpic.style.display = "inline-block"
+                pic.onmousemove = function(event){
+                    move.style.display = "inline-block"
+                    bigpic.style.display = "inline-block"
+                    move.style.cursor = 'move'
+                    var newleft = event.pageX - this.offsetLeft - move.offsetWidth/2
+                    var newtop = event.pageY - this.offsetTop - move.offsetHeight/2
+                    console.log(newleft);
+                    move.style.left = newleft + "px"
+                    move.style.top = newtop + "px"
+                    bigpic.style.backgroundPositionX = -propotion*newleft + "px"
+                    bigpic.style.backgroundPositionY = -propotion*newtop + "px"
+                    if(newleft<=0){
+                        move.style.left = 0
+                        bigpic.style.backgroundPositionX = 0
+                    }
+                    if(newtop<=0){
+                        move.style.top = 0
+                        bigpic.style.backgroundPositionY = 0
+                    }
+                    if((newleft + move.clientWidth)>=pic.clientWidth){
+                        move.style.left = pic.clientWidth - move.clientWidth + "px"
+                        bigpic.style.backgroundPositionX = -propotion*(pic.clientWidth - move.clientWidth) + "px"
+                    }
+                    if((newtop + move.clientHeight)>=pic.clientHeight){
+                        move.style.top = pic.clientHeight - move.clientHeight + "px"
+                        bigpic.style.backgroundPositionY = -propotion*(pic.clientHeight - move.clientHeight)+ "px"
+                    }
+                    if(event.clientX>(pic.offsetLeft + pic.clientWidth)){
+                        move.onmousemove = null
+                        move.style.display = "none"
+                        bigpic.style.display = "none"
+                    }
+                    if(event.clientX<pic.offsetLeft){
+                        move.onmousemove = null
+                        move.style.display = "none"
+                        bigpic.style.display = "none"
+                    }
+                    if(event.clientY>(pic.offsetTop + pic.clientHeight)){
+                        move.onmousemove = null
+                        move.style.display = "none"
+                        bigpic.style.display = "none"
+                    }
+    
+                }
+    
+            
+            }
+            
+            // alert(top)
+            
+        }
+        pic.onmouseout = function(){
+            move.onmousemove = null
+            move.style.display = "none"
+            bigpic.style.display = "none"
+        }
+        
+        for (let i= 0; i < navimgs.length; i++) {
+            navimgs[i].onmouseover = function(){
+                $('.pic img').width('auto')
+                navimgs[j].style.border = "1px solid transparent"
+                navimgs[i].style.border = "1px solid red"
+                j = i
+                index = i+1
+                Img.src = "./img/portfolio/big0" + (i+1) + ".jpg";
+                console.log(Img,$('.pic img').width());
+                Img.style.width = $('.pic img').width() + 'px'
+                
+                bigpic.style.backgroundImage = "url(./img/portfolio/big0" + (i+1) + ".jpg)";
+            }
+        }
+    
+    
+    </script>
+</body>
+
+</html>
