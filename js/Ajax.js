@@ -41,7 +41,8 @@ var ajax = {
         xhr.responseType = 'json'
 
         // 发送请求
-        if (options.type === 'get') {
+        console.log(options.method);
+        if (options.method === 'get') {
             xhr.send();
         } else {
             // post请求的发送方式
