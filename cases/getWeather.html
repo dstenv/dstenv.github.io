@@ -5,7 +5,8 @@
 <!--meta 元标签 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
-<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<!-- 解决https的协议下携带http的请求 -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 <title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
 <!-- 导入CSS文件方式1 -->
 <!--     <link rel="stylesheet" href=""> -->
