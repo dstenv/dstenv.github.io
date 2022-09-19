@@ -210,11 +210,11 @@
         long.onmouseleave = function () {
             // 如果鼠标移出 验证失败 设置移动和鼠标松开事件为null
             this.onmousemove = null
+            this.onmouseup = null
             alert('验证失败')
             getRandomPosition()
             move.style.left = beginLeft + 'px'
             after.style.width = 0 + 'px'
-            this.onmouseup = null
         }
         long.onmouseup = function () {
             // 如果鼠标松开 设置移动和鼠标移出为null
