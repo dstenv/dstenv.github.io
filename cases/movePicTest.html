@@ -173,6 +173,12 @@
     // 设置滑块的初始位置
     var beginLeft = (movebox.offsetWidth - move.offsetWidth)/2
     move.style.left = beginLeft + 'px'
+
+
+    function move() {
+        
+    }
+
     move.onmousedown = function (event) {
         event.preventDefault()
         // 按下的位置
@@ -251,6 +257,10 @@
                 after.style.width = 0 + 'px'
             }
         }
+    }
+
+    move.ontouchstart = function (event) {
+        console.log(event);
     }
 
 </script>
