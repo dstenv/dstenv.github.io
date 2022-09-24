@@ -1,0 +1,165 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+ul {
+  list-style: none; }
+
+body {
+  background-color: #ffbea8; }
+
+#app {
+  overflow: hidden;
+  position: relative;
+  width: 440px;
+  margin: 30px auto 0;
+  background-color: #fff;
+  border-radius: 15px; }
+  #app .head {
+    overflow: hidden;
+    text-align: center; }
+    #app .head img {
+      width: 80px; }
+    #app .head .head-item {
+      width: 190px;
+      margin: 30px auto;
+      display: flex;
+      align-items: center; }
+    #app .head span {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 5px 10px;
+      background-color: #fe7345;
+      border-radius: 5px 5px 15px 5px;
+      transform: rotateZ(5deg); }
+  #app .main {
+    text-align: center;
+    margin: 20px 0 0;
+    display: flex;
+    flex-direction: column; }
+    #app .main .content {
+      padding-top: 10px;
+      position: relative;
+      display: flex;
+      margin: 0 auto;
+      vertical-align: top; }
+      #app .main .content input {
+        font-size: 16px;
+        width: 210px;
+        margin-right: 18px;
+        height: 30px;
+        outline: none;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 2px dashed aqua; }
+      #app .main .content button {
+        width: 75px;
+        height: 35px;
+        border: 1px solid black;
+        outline: none;
+        font-size: 16px;
+        box-shadow: 0 2px 1px 1px black;
+        cursor: pointer;
+        transition: all .1s ease-in;
+        transform-origin: right bottom;
+        transform: rotateZ(8deg);
+        border-radius: 8px; }
+    #app .main .null-enter {
+      transform: scale(0.2); }
+    #app .main .null-enter-active {
+      transition: all .3s ease-in-out; }
+    #app .main .null-enter-to {
+      transform: scale(1); }
+    #app .main .null {
+      margin: 40px 0 20px;
+      font-size: 14px;
+      color: #a6a6c6; }
+    #app .main .listMove-leave {
+      transform: scale(1); }
+    #app .main .listMove-leave-active {
+      transition: all 0.6s cubic-bezier(0.78, -0.08, 0.41, 1.22); }
+    #app .main .listMove-leave-to {
+      transform: scale(0); }
+    #app .main .listMove-enter {
+      transform: scale(0.4); }
+    #app .main .listMove-enter-active {
+      transition: all 0.3s cubic-bezier(0.78, -0.08, 0.41, 1.22); }
+    #app .main .listMove-enter-to {
+      transform: scale(1); }
+    #app .main .list {
+      transform-style: preserve-3d;
+      perspective: 200px;
+      margin: 20px auto 0;
+      width: 350px;
+      display: flex;
+      flex-direction: column; }
+      #app .main .list li {
+        display: flex;
+        padding: 8px 10px;
+        margin-bottom: 5px;
+        align-items: center;
+        vertical-align: middle;
+        cursor: pointer;
+        border-radius: 5px;
+        justify-content: space-between; }
+        #app .main .list li div {
+          height: 20px;
+          display: flex; }
+          #app .main .list li div .check {
+            vertical-align: middle;
+            cursor: pointer;
+            width: 15px;
+            height: 15px; }
+          #app .main .list li div span {
+            margin-left: 8px;
+            line-height: 14px; }
+        #app .main .list li i {
+          transition: color .2s linear; }
+        #app .main .list li i:hover {
+          color: #ddd; }
+      #app .main .list .liChecked {
+        animation: cardRotate .8s ease-in-out 1;
+        background-color: #fe7345; }
+        #app .main .list .liChecked span {
+          color: white;
+          text-decoration: line-through; }
+@keyframes cardRotate {
+  0% {
+    transform: rotateX(0deg); }
+  1% {
+    transform: rotateX(45deg); }
+  40% {
+    transition: all .5s ease-in-out;
+    transform: rotateX(-45deg); }
+  60% {
+    transform: rotateX(0deg); }
+  80% {
+    transition: all .5s ease-in-out;
+    transform: rotateX(-10deg); }
+  100% {
+    transform: rotateX(0deg); } }
+  #app .foot {
+    font-size: 13px;
+    margin: 70px 30px 10px;
+    height: 23px;
+    line-height: 23px;
+    display: flex;
+    justify-content: space-between; }
+    #app .foot span {
+      display: flex; }
+    #app .foot .controller {
+      display: flex; }
+      #app .foot .controller span {
+        cursor: pointer;
+        display: inline-block;
+        padding: 2px 5px;
+        border-radius: 5px;
+        margin-right: 5px; }
+        #app .foot .controller span:hover {
+          background-color: #fe7345; }
+      #app .foot .controller .spanactive {
+        background-color: #fe7345; }
+
+/*# sourceMappingURL=index.css.map */

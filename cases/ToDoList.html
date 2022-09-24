@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="zh">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-wdith, initial-scale=1.0"> <!--兼容移动端 -->
+<title></title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+    <link rel="stylesheet" href="../css/todolist.css">
+    <link rel="stylesheet" href="../fonts/font-awesome/css/font-awesome.min.css">
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<script src ="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<style type ="text/css">
+</style>
+</head>
+<body>
+    <div id="app">
+        <div class="head">
+            <div class="head-item">
+                <img src="../img/note.75134fb0.svg" alt="">
+                <span>To-Do List</span>
+            </div>
+            <h3>~ Today I need to ~</h3>
+        </div>
+
+        <div class="main">
+            <div class="content">
+                <input type="text" v-model="value" placeholder="Add new todo..." @keydown.enter="commit">
+                <button @click="commit" @mousedown.left="down" @mouseup.left="up">submit</button>
+            </div>
+            <transition name="null">
+                <span v-show="info.length == 0" class="null">Congrat, you have no more tasks to do</span>
+            </transition>
+
+            <transition-group tag="ul" class="list" v-show="info.length>0" name="listMove">
+                <li v-for="(item,index) in info" :class="{liChecked:item.status == 1}" :key="item.value" v-show="isShowAll || item.status == status">
+                    <div>
+                        <input type="checkbox" class="check" @click="getCheck($event,item)">
+                        <span>{{item.value}}</span>
+                    </div>
+                    <i class="fa fa-times" @click="deleteOne(index)"></i>
+                </li>
+            </transition-group>
+        </div>
+
+        <div class="foot" v-show="info.length>0">
+            <span>{{info.length - checkData.length}} item left</span>
+            <div class="controller">
+                <span @click="lookAll" :class="{spanactive: isShowAll}">All</span>
+                <span v-show="info.length != checkData.length && checkData.length > 0" :class="{spanactive: status == 2 && !isShowAll}" @click="changeStatus(2)">Active</span>
+                <span v-show="info.length != checkData.length && checkData.length > 0" :class="{spanactive: status == 1 && !isShowAll}" @click="changeStatus(1)">Completed</span>
+                <span v-show="checkData.length > 0" @click="deleteChecked">Clear Completed</span>
+            </div>
+        </div>
+    </div>
+<!-- 引入Jquery文件 -->
+<script src =""></script>
+<script type="text/javascript">
+    let vue = new Vue({
+        data() {
+            return {
+                info: [],
+                value: '',
+                checkData: [],
+                status: 0,
+                isShowAll: true,
+            }
+        },
+        methods: {
+            down(event) {
+                event.target.style.transform = 'rotateZ(0deg)'
+            },
+            up(event) {
+                event.target.style.transform = 'rotateZ(8deg)'
+            },
+            commit() {
+                let isHas = this.info.filter(v => v.value == this.value)
+                if(isHas.length === 0 && this.value.trim()) {
+                    this.info.unshift({value:this.value,status:2})
+                }
+                console.log(this.info);
+                this.value = ''
+            },
+            changeStatus(status) {
+                this.isShowAll = false
+                this.status = status
+            },
+            lookAll(){
+                this.isShowAll = true
+            },
+            deleteOne(index) {
+                // this.info.splice(index,1)
+                this.checkData.splice(this.checkData.indexOf(this.info[index]),1)
+                this.info = this.info.filter( (v,i) => i != index)
+            },
+            
+            getCheck(event,data) {
+                // console.log(event.target.checked,data);
+                if(event.target.checked){
+                    data.status = 1
+                    this.checkData.push(data)
+                }else {
+                    data.status = 2
+                    // console.log(data,this.checkData.indexOf(data));
+                    this.checkData.splice(this.checkData.indexOf(data),1)
+                    if(this.checkData.length === 0) {
+                        this.isShowAll = true
+                    }
+                }
+                // console.log(this.checkData);
+            },
+            deleteChecked() {
+                this.info = this.info.filter( v => v.status == 2)
+                this.checkData = []
+                if(this.checkData.length === 0) {
+                    this.isShowAll = true
+                }
+            }
+        }
+    }).$mount('#app')
+</script>
+</body>
+</html>
