@@ -80,10 +80,15 @@
             },
             commit() {
                 let isHas = this.info.filter(v => v.value == this.value)
-                if(isHas.length === 0 && this.value.trim()) {
+                if(isHas.length != 0) {
+                    alert('内容相同，请勿重复')
+                    this.value = ''
+                    return 
+                }
+                if(this.value.trim()) {
                     this.info.unshift({value:this.value,status:2})
                 }
-                console.log(this.info);
+                // console.log(this.info);
                 this.value = ''
             },
             changeStatus(status) {
