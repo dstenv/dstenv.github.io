@@ -99,16 +99,26 @@
                 this.isShowAll = true
             },
             deleteOne(index) {
+                console.log(111);
                 // this.info.splice(index,1)
-                this.checkData.splice(this.checkData.indexOf(this.info[index]),1)
+                if(this.info[index].status == 1) {
+                    this.checkData.splice(this.checkData.indexOf(this.info[index]),1)
+                }
                 this.info = this.info.filter( (v,i) => i != index)
+                
+                if(this.checkData.length === 0 || this.info.length === this.checkData.length) {
+                    console.log(222);
+                    this.isShowAll = true
+                }
             },
-            
             getCheck(event,data) {
                 // console.log(event.target.checked,data);
                 if(event.target.checked){
                     data.status = 1
                     this.checkData.push(data)
+                    if(this.info.length - this.checkData.length === 0) {
+                        this.isShowAll = true
+                    }
                 }else {
                     data.status = 2
                     // console.log(data,this.checkData.indexOf(data));
