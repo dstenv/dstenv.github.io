@@ -57,10 +57,10 @@ body {
       #app .main .content button {
         width: 75px;
         height: 35px;
-        border: 1px solid black;
+        border: 1px solid #a69d9d;
         outline: none;
         font-size: 16px;
-        box-shadow: 0 2px 1px 1px black;
+        box-shadow: 0 4px 8px 1px rgba(0,0,0,.2);
         cursor: pointer;
         transition: all .1s ease-in;
         transform-origin: right bottom;
