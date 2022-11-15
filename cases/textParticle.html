@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--如果script标签放在body前面，则写js时需要先window.onload=funtion(){代码...}-->
+<html lang="zh">
+<head>
+<!--meta 元标签 -->
+<meta charset="UTF-8">
+<title>雪花背景+文字粒子特效</title> <!-- title中的内容可以加快浏览器搜索引擎优化去抓取 -->
+<!-- 导入CSS文件方式1 -->
+<!--     <link rel="stylesheet" href=""> -->
+<!-- 引入less文件需要导入的东西 -->
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.2/less.min.js"></script> -->
+<!-- 引入工具库文件 绝对路径不对 需要自行修改 -->
+<!-- <script src ="F:\培训\Js\testUtil.js"></script> -->
+<!-- <script src ="F:\培训\Js\Util.js"></script> -->
+<style type ="text/css">
+</style>
+</head>
+<body style="margin: 0;overflow: hidden;">
+    <canvas id="canvas" style="background-color: #000;"></canvas>
+
+<!-- 引入Jquery文件 -->
+<script>
+    const canvas = document.querySelector('#canvas')
+    const ctx = canvas.getContext('2d')
+    const { clientWidth: width, clientHeight: height } = document.documentElement
+    canvas.width = width
+    canvas.height = height
+    ctx.fillStyle = '#fff'
+    const bgColor = Array.from(new Array(400)).map(v => {
+        return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            step: Math.random() * 2.5 + 0.5
+        }
+    })
+
+    let colors = []
+    const sendText = (text, fontSize = 100, stepV = 40) => {
+        ctx.fillStyle = '#000'
+        ctx.fillRect(0,0,width,height)
+        ctx.font = `bold ${fontSize}px 微软雅黑`
+        ctx.fillStyle = '#fff'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(text,width / 2,height / 2)
+        const data = ctx.getImageData(0,0,width,height).data
+
+        let index = 0
+        let bl = 4
+        let useIndex = 0
+        for(let i = 0; i < data.length; i+=4){
+            const x = index % width
+            const y = Math.ceil(index / width)
+            if(x % bl === 0 && y % bl === 0 && data[i] === 255 && data[i+1] === 255 && data[i+2] === 255 ) {
+                const rx = Math.floor(Math.random() * fontSize) + width / 2 - fontSize / 2
+                const ry = Math.floor(Math.random() * fontSize) + height / 2 - fontSize / 2
+
+                const item = colors[useIndex]
+                if(item) {
+                    colors[useIndex] = {
+                        x,
+                        y,
+                        rx: item.x,
+                        ry: item.y,
+                        stepX: Math.abs(item.x - x) / stepV,
+                        stepY: Math.abs(item.y - y) / stepV
+                    }
+                } else {
+                    colors[useIndex] = {
+                        x,
+                        y,
+                        rx,
+                        ry,
+                        stepX: Math.abs(rx - x) / stepV,
+                        stepY: Math.abs(ry - y) / stepV
+                    }
+                }
+                useIndex++
+            }
+            index++
+        }
+        if(useIndex < colors.length) {
+            colors.splice(useIndex,colors.length - useIndex)
+        }
+    }
+
+    const render = () => {
+        ctx.clearRect(0,0,width,height)
+        ctx.beginPath()
+        colors.forEach(v => {
+            if(v.rx > v.x) {
+                v.rx -= v.stepX
+                if(v.rx < v.x) {
+                    v.rx = v.x
+                }
+            } else if(v.rx < v.x) {
+                v.rx += v.stepX
+                if(v.rx > v.x) {
+                    v.rx = v.x
+                }
+            }
+
+            if(v.ry > v.y) {
+                v.ry -= v.stepY
+                if(v.ry < v.y) {
+                    v.ry = v.y
+                }
+            } else if(v.ry < v.y) {
+                v.ry += v.stepY
+                if(v.ry > v.y) {
+                    v.ry = v.y
+                }
+            }
+            ctx.rect(v.rx,v.ry,3,3)
+        })
+        bgColor.forEach(v => {
+            v.y = v.y > height? 0:(v.step + v.y)
+            ctx.rect(v.x,v.y,3,3)
+        })
+
+        ctx.fill()
+        requestAnimationFrame(render)
+    }
+    render()
+    const awaitSendText = (text, fontSize, stepV) => {
+        return new Promise(resolve => {
+            sendText(text,fontSize,stepV)
+            colors.sort(v => Math.random() - 0.5)
+            setTimeout(() => {
+                resolve()
+            }, 2000 + (stepV > 40? 1000 : 0));
+        })
+    }
+    const run = async () => {
+        const str = '菩萨蛮。萧萧几叶风兼雨，离人偏识长更苦。欹枕数秋天，蟾蜍下早弦。夜寒惊被薄，泪与灯花落。无处不伤心，轻尘在玉琴。临江仙。点滴芭蕉心欲碎，声声催忆当初。欲眠还展旧时书。鸳鸯小字，犹记手生疏。倦眼乍低缃帙乱，重看一半模糊。幽窗冷雨一灯孤。料应情尽，还道有情无。虞美人。银床淅沥青梧老，屧粉秋蛩扫。采香行处蹙连钱，拾得翠翘何恨不能言。回廊一寸相思地，落月成孤倚。背灯和月就花阴，已是十年踪迹十年心。'
+        const text = str.split('。')
+        for(let i = 0; i < text.length; i++){
+            await awaitSendText(text[i], 80, i === 0? 100 : 40)
+        }
+        setTimeout(() => {
+            run()
+        }, 4);
+    }
+    run()
+</script>
+</body>
+</html>
